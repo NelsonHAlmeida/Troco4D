@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{36E99DBB-2B60-4CDE-91A2-D03063F540E2}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\Troco4D.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="src\Sample.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Troco4D">
+        <MSBuild Projects="..\Troco4D.dproj"/>
+    </Target>
+    <Target Name="Troco4D:Clean">
+        <MSBuild Projects="..\Troco4D.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Troco4D:Make">
+        <MSBuild Projects="..\Troco4D.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Sample">
+        <MSBuild Projects="src\Sample.dproj"/>
+    </Target>
+    <Target Name="Sample:Clean">
+        <MSBuild Projects="src\Sample.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Sample:Make">
+        <MSBuild Projects="src\Sample.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Troco4D;Sample"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Troco4D:Clean;Sample:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Troco4D:Make;Sample:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
