@@ -1,31 +1,35 @@
-unit uMaquina;
+unit Troco4D.Maquina;
 
 interface
 
 uses
   Classes,
-  uIMaquina,
-  uTroco;
+  Troco4D.Troco;
 
 type
   {$SCOPEDENUMS ON}
     TTipoCedula = (Nota, Moeda);
   {$SCOPEDENUMS OFF}
 
+  IMaquina = interface
+    function MontarTroco(aTroco: Double): String;
+  end;
 
   TMaquina = class(TInterfacedObject, IMaquina)
   private
     FList : TList;
     FContador : Integer;
+    FTroco : String;
     procedure LimparObjetosList;
     procedure CalculaTroco(var aValue : Integer;
                            const aTipo : TTipoCedula);
+    procedure Troco;
   public
     constructor Create;
     destructor Destroy; override;
     class function New: IMaquina;
 
-    function MontarTroco(Troco: Double): TList;
+    function MontarTroco(aTroco: Double): String;
   end;
 
 implementation
@@ -87,11 +91,11 @@ begin
   end;
 end;
 
-function TMaquina.MontarTroco(Troco: Double): TList;
+function TMaquina.MontarTroco(aTroco: Double): String;
 var
   LValor : Integer;
 begin
-  if Troco <= 0 then
+  if aTroco <= 0 then
     raise Exception.Create('Troco invalido');
 
   FContador := 1;
@@ -99,18 +103,38 @@ begin
   LimparObjetosList;
   FList.Clear;
 
-  LValor := Trunc(Troco);
+  LValor := Trunc(aTroco);
   CalculaTroco(LValor, TTipoCedula.Nota);
 
-  LValor := Round(Frac(Troco) * 100);
+  LValor := Round(Frac(aTroco) * 100);
   CalculaTroco(LValor, TTipoCedula.Moeda);
 
-  Result:= FList;
+  Troco;
+
+  Result:= FTroco;
 end;
 
 class function TMaquina.New: IMaquina;
 begin
   Result:= Self.Create;
+end;
+
+procedure TMaquina.Troco;
+var
+  LTroco : TTroco;
+begin
+  FTroco:= EmptyStr;
+//
+  for LTroco in FList do
+  begin
+    FTroco :=
+       FTroco +
+       Format('%d %s de %s',
+             [LTroco.GetQuantidade,
+              LTroco.GetTipo.GetCedula,
+              LTroco.GetTipo.GetValorCedula]);
+    FTroco := FTroco + #13#10;
+  end;
 end;
 
 end.

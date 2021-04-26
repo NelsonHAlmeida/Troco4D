@@ -31,8 +31,8 @@ requires
   rtl;
 
 contains
-  uIMaquina in 'src\uIMaquina.pas',
-  uMaquina in 'src\uMaquina.pas',
-  uTroco in 'src\uTroco.pas';
+  Troco4D.Maquina in 'src\Troco4D.Maquina.pas',
+  Troco4D.Troco in 'src\Troco4D.Troco.pas',
+  Troco4D in 'src\Troco4D.pas';
 
 end.

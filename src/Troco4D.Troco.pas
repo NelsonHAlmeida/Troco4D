@@ -1,4 +1,4 @@
-unit uTroco;
+unit Troco4D.Troco;
 
 interface
 
